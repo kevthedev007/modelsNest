@@ -1,10 +1,10 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
-const logger = require('morgan');
 
 if(process.env.NODE_ENV !== 'production') {
     require('dotenv').config()
+    const logger = require('morgan');
 }
 
 const app = express()
@@ -18,7 +18,7 @@ const authRoutes = require('./routes/authRoutes')
 app.use(cors())
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
-app.use(logger('dev'));
+// app.use(logger('dev'));
 
 
 //routes
