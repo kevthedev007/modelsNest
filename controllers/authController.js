@@ -30,7 +30,7 @@ const register = async (req, res) => {
         let body = `<h1>Email Confirmation</h1>
                     <h2>Hello ${email}</h2>
                     <p>Thank you for subscribing. Please confirm email by clicking on the link below</p>
-                    <a href=http://localhost:4000/auth/confirmation/${token}>Click here</a>`
+                    <a href=http://modelsnest.herokuapp.com/auth/confirmation/${token}>Click here</a>`
 
         sendMail(email, body)
 
@@ -61,8 +61,8 @@ const confirmation = async (req, res) => {
             { verified: true },
             { where: { confirmation_code } }
         )
-        // res.redirect('http://localhost:3000/login')
-        return res.send('account verified')
+        res.redirect('http://localhost:3000/login')
+        // return res.send('account verified')
     } catch (err) {
         return res.status(400).send(err)
     }
@@ -108,7 +108,7 @@ const forget_password = async (req, res) => {
         let body = `<h1>Password Reset</h1>
                      <h2>Hello ${email}</h2>
                      <p>Please click on the one-time link blow to reset your password. link is valid for 10 minutes</p>
-                     <a href=http://localhost:4000/auth/reset-password?id=${user.id}&token=${token}>Click here</a>`
+                     <a href=http://localhost:3000/reset-password?id=${user.id}&token=${token}>Click here</a>`
 
         sendMail(email, body)
         return res.status(200).send('A one-time password link has been sent to your email.')
