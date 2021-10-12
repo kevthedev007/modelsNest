@@ -11,7 +11,7 @@ let transporter = nodemailer.createTransport({
     }
   });
 
-function sendMail(email, body) {
+function sendMail(email, body, res) {
     let mailTransport = {
         from: '"noreply" <ModelsNest@gmail.com>', // sender address
         to: email, // list of receivers

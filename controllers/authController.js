@@ -32,7 +32,7 @@ const register = async (req, res) => {
                     <p>Thank you for subscribing. Please confirm email by clicking on the link below</p>
                     <a href=http://modelsnest.herokuapp.com/auth/confirmation/${token}>Click here</a>`
 
-        sendMail(email, body)
+        sendMail(email, body, res)
 
         //save to database
         const newUser = await User.create({
@@ -110,7 +110,7 @@ const forget_password = async (req, res) => {
                      <p>Please click on the one-time link blow to reset your password. link is valid for 10 minutes</p>
                      <a href=http://localhost:3000/reset-password?id=${user.id}&token=${token}>Click here</a>`
 
-        sendMail(email, body)
+        sendMail(email, body, res)
         return res.status(200).send('A one-time password link has been sent to your email.')
     } catch (err) {
         return res.status(400).send(err)
