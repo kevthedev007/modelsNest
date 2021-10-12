@@ -2,6 +2,8 @@ const nodemailer = require('nodemailer')
 
 let transporter = nodemailer.createTransport({
     service: "gmail",
+    port: 465,
+    secure: true,
     auth: {
       user: process.env.GMAIL_USER, // generated ethereal user
       pass: process.env.GMAIL_PASS, // generated ethereal password
