@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt')
 const { User } = require('../models/index')
-const sendMail = require('../utils/sendmail')
+const { sendConfirmationMail, sendPasswordResetMail } = require('../utils/sendmail')
 const jwt = require('jsonwebtoken')
 const { OAuth2Client } = require('google-auth-library')
 
@@ -26,13 +26,11 @@ const register = async (req, res) => {
         //Create confirmation code with email token
         const token = jwt.sign({ email: email }, process.env.JWT_SECRET_KEY);
 
-        //send confirmation mail
-        let body = `<h1>Email Confirmation</h1>
-                    <h2>Hello ${email}</h2>
-                    <p>Thank you for subscribing. Please confirm email by clicking on the link below</p>
-                    <a href=http://modelsnest.herokuapp.com/auth/confirmation/${token}>Click here</a>`
+        const arr = full_name.split(" ")
+        const first_name = arr[0]
 
-        sendMail(email, body, res)
+        //send comfirmation mail
+        sendConfirmationMail(email, first_name, token, res)
 
         //save to database
         const newUser = await User.create({
@@ -104,13 +102,11 @@ const forget_password = async (req, res) => {
         const secret = user.password + process.env.JWT_SECRET_KEY
         const token = jwt.sign({ id: user.id }, secret, { expiresIn: '10m' })
 
-        //send mail
-        let body = `<h1>Password Reset</h1>
-                     <h2>Hello ${email}</h2>
-                     <p>Please click on the one-time link blow to reset your password. link is valid for 10 minutes</p>
-                     <a href=http://localhost:3000/reset-password?id=${user.id}&token=${token}>Click here</a>`
+        const arr = user.full_name.split(" ");
+        const first_name = arr[0]
 
-        sendMail(email, body, res)
+        //send password reset link
+        sendPasswordResetMail(email, first_name, user.id, token, res)
         return res.status(200).send('A one-time password link has been sent to your email.')
     } catch (err) {
         return res.status(400).send(err)
