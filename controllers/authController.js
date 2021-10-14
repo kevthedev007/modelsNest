@@ -73,7 +73,7 @@ const signin = async (req, res) => {
     try {
         //check if email exists
         const user = await User.findOne({ where: { email } })
-        if (!user) return res.status(400).send('Email already exists')
+        if (!user) return res.status(400).send('user does not exist, please signup')
 
         //check if password is correct
         const validPass = await bcrypt.compare(password, user.password);
