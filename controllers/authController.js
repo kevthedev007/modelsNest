@@ -30,7 +30,7 @@ const register = async (req, res) => {
         const first_name = arr[0]
 
         //send comfirmation mail
-        sendConfirmationMail(email, first_name, token, res)
+        sendConfirmationMail(email, first_name, token)
 
         //save to database
         const newUser = await User.create({
