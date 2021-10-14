@@ -57,7 +57,7 @@ function sendConfirmationMail(email, name, token) {
       
 
     let mailTransport = {
-        from: '"noreply" <modelsnestnigeria@gmail.com>',
+        from: '"Models Nest" <modelsnestnigeria@gmail.com>',
         to: email, // list of receivers
         subject: "Account Activation", // Subject line
         html: htmlToSend
@@ -82,10 +82,10 @@ function sendConfirmationMail(email, name, token) {
              token: token
         };
         var htmlToSend = template(replacements)
-        //test 2 ends here
+       
   
       let mailTransport = {
-          from: '"noreply" <modelsnestnigeria@gmail.com>', // sender address
+          from: '"Models Nest" <modelsnestnigeria@gmail.com>', // sender address
           to: email, // list of receivers
           subject: "Password Reset", // Subject line
           html: htmlToSend
