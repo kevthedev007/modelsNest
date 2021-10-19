@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt')
-const { User } = require('../models/index')
+const { User, Models, Recruiter } = require('../models/index')
 const { sendConfirmationMail, sendPasswordResetMail } = require('../utils/sendmail')
 const jwt = require('jsonwebtoken')
 const { OAuth2Client } = require('google-auth-library')
@@ -82,10 +82,22 @@ const signin = async (req, res) => {
         //check if user is confirmed/verified
         if (user.verified == false) return res.json('Please check your email to verify your account');
 
+        //check if user has filled form and created account
+        const account = false;
+
+        if (user.role == "model") {
+            const model = await Models.findOne({ where: { userId: user.id } })
+            account = true
+        }
+        if (user.role == "recruiter") {
+            const model = await Recruiter.findOne({ where: { userId: user.id } })
+            account = true
+        }
+
         //assign jwt token
         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET_KEY);
 
-        res.status(200).json({ token, role: user.role })
+        res.status(200).json({ token, role: user.role, account })
     } catch (err) {
         return res.status(400).send(err)
     }
@@ -126,7 +138,7 @@ const reset_password = async (req, res) => {
 
         //verify the token received
         const secret = user.password + process.env.JWT_SECRET_KEY
-        console.log({secret: secret})
+        console.log({ secret: secret })
         const payload = jwt.verify(token, secret);
 
         //compare passwords sent
