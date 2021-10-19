@@ -4,20 +4,22 @@ const cors = require('cors')
 
 if(process.env.NODE_ENV !== 'production') {
     require('dotenv').config()
-    const logger = require('morgan');
+    require('morgan')('dev');
 }
 
 const app = express()
 
 //importing routes
-const authRoutes = require('./routes/authRoutes')
+const authRoutes = require('./routes/authRoutes');
+const recruiterRoutes = require('./routes/recruiterRoutes')
+const modelRoutes = require('./routes/modelRoutes')
 
 
 
 //adding middlewares
 app.use(cors())
-app.use(bodyParser.urlencoded({extended: false}))
-app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended: false, limit: '60mb'}))
+app.use(bodyParser.json({limit: '50mb'}))
 // app.use(logger('dev'));
 
 
@@ -27,6 +29,8 @@ app.get('/', (req, res) => {
 })
 
 app.use('/auth', authRoutes)
+app.use('/recruiter', recruiterRoutes)
+app.use('/model', modelRoutes)
 
 let port = process.env.PORT || 4000
 
