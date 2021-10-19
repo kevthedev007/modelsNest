@@ -85,7 +85,6 @@ const signin = async (req, res) => {
         //check if user has filled form and created account
         let hasAccount = true;
 
-        console.log(user.role)
         if (user.role == "model") {
             const model = await Models.findOne({ where: { userId: user.id } })
             if(!model) hasAccount = false
@@ -98,7 +97,7 @@ const signin = async (req, res) => {
         //assign jwt token
         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET_KEY);
 
-        res.status(200).json({ token, role: user.role, account: hasAccount})
+        res.status(200).json({ token, role: user.role, isFullySignedUp: hasAccount})
     } catch (err) {
         return res.status(400).send(err)
     }
