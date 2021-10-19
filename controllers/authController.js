@@ -83,21 +83,22 @@ const signin = async (req, res) => {
         if (user.verified == false) return res.json('Please check your email to verify your account');
 
         //check if user has filled form and created account
-        const hasAccount = false;
+        let hasAccount = true;
 
+        console.log(user.role)
         if (user.role == "model") {
             const model = await Models.findOne({ where: { userId: user.id } })
-            hasAccount = true
+            if(!model) hasAccount = false
+        } else {
+            const recruiter = await Recruiter.findOne({ where: { userId: user.id } })
+            if(!recruiter) hasAccount = false
         }
-        if (user.role == "recruiter") {
-            const model = await Recruiter.findOne({ where: { userId: user.id } })
-            hasAccount = true
-        }
+        console.log(hasAccount) 
 
         //assign jwt token
         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET_KEY);
 
-        res.status(200).json({ token, role: user.role, account: hasAccount })
+        res.status(200).json({ token, role: user.role, account: hasAccount})
     } catch (err) {
         return res.status(400).send(err)
     }
