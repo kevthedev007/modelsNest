@@ -3,6 +3,10 @@ const cloudinary = require('../utils/cloudinary')
 
 const createAccount = async (req, res) => {
     const { company_name, country, state, zip, phone_no, website, fileStr } = req.body
+
+    //check if recruiter already has an account
+    const check = await Recruiter.findOne({ where: { userId: req.user.id } })
+    if(check) return res.status(400).send('Recruiter already has an account')
     
     try {
         const result = await cloudinary.uploader.

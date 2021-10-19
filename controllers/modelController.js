@@ -4,6 +4,11 @@ const cloudinary = require('../utils/cloudinary')
 
 const createAccount = async (req, res, next) => {
     const { age, complexion, body_size, bust, waist, hips, height, category, country, state, zip, phone_no, fileStr } = req.body
+
+    //check if model already has an account
+    const check = await Models.findOne({ where: { userId: req.user.id } })
+    if(check) return res.status(400).send('Model already has an account')
+
     console.log(age, complexion)
     try {
         const result = await cloudinary.uploader.
