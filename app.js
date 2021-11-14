@@ -16,7 +16,7 @@ const app = express()
 const authRoutes = require('./routes/authRoutes');
 const recruiterRoutes = require('./routes/recruiterRoutes')
 const modelRoutes = require('./routes/modelRoutes')
-
+const eventRoutes = require('./routes/eventRoutes')
 
 
 //adding middlewares
@@ -34,6 +34,7 @@ app.get('/', (req, res) => {
 app.use('/auth', authRoutes)
 app.use('/recruiter', recruiterRoutes)
 app.use('/model', modelRoutes)
+app.use('/events', eventRoutes)
 
 let port = process.env.PORT || 4000
 
