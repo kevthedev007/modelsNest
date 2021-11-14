@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Recruiters', {
+    await queryInterface.createTable('Social_Media', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -15,27 +15,16 @@ module.exports = {
           key: 'id'
         }
       },
-      company_name: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      country: {
+      twitter: {
         type: Sequelize.STRING
       },
-      state: {
+      instagram: {
         type: Sequelize.STRING
       },
-      zip: {
+      facebook: {
         type: Sequelize.STRING
       },
-      phone_no: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      website: {
-        type: Sequelize.STRING
-      },
-      profile_image: {
+      tiktok: {
         type: Sequelize.STRING
       },
       createdAt: {
@@ -49,6 +38,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Recruiters');
+    await queryInterface.dropTable('Social_Media');
   }
 };

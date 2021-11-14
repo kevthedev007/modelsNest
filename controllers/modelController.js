@@ -1,13 +1,14 @@
-const { Models, User } = require('../models');
+const { Models, User, Document, Social_Media } = require('../models');
 const cloudinary = require('../utils/cloudinary')
 
 
 const createAccount = async (req, res, next) => {
+    console.log(req.body)
     const { age, complexion, body_size, bust, waist, hips, height, category, country, state, zip, phone_no, fileStr } = req.body
 
     //check if model already has an account
     const check = await Models.findOne({ where: { userId: req.user.id } })
-    if(check) return res.status(400).send('Model already has an account')
+    if (check) return res.status(400).send('Model already has an account')
 
     console.log(age, complexion)
     try {
@@ -18,8 +19,12 @@ const createAccount = async (req, res, next) => {
 
         console.log(result)
 
-        const model = await Models.create({ userId: req.user.id, age, complexion, body_size, bust, waist, hips, height, category, country, state, zip, phone_no, documentId: result.public_id })
+        const model = await Models.create({ userId: req.user.id, age, complexion, body_size, bust, waist, hips, height, category, country, state, zip, phone_no })
 
+        const addDocument = await Document.create({
+            userId: req.user.id,
+            image: result.public_id
+        })
         return res.status(200).send('account created')
     } catch (err) {
         return res.status(500).send(err)
@@ -31,7 +36,7 @@ const dashboard = async (req, res, next) => {
         const info = await User.findOne(
             {
                 where: { id: req.user.id },
-                include: 'model'
+                include: ['model', 'document', 'social_media']
             })
         return res.status(200).json(info)
     } catch (err) {

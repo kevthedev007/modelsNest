@@ -11,11 +11,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate({ User }) {
       // define association here
-      Models.belongsTo(User, { foreignKey: 'userId', as: 'user'})
+      Models.belongsTo(User, {
+        foreignKey: { name: "userId", allowNull: false },
+        as: "user",
+      });
     }
 
     toJSON() {
-      return { ...this.get(), id: undefined, userId: undefined}
+      return { ...this.get(), id: undefined, createdAt: undefined, updatedAt: undefined }
     }
   };
   Models.init({
@@ -47,7 +50,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
-    documentId: DataTypes.STRING
+    profile_image: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Models',

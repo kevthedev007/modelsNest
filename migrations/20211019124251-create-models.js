@@ -52,7 +52,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
-      documentId: {
+      profile_image: {
         type: Sequelize.STRING
       },
       createdAt: {
