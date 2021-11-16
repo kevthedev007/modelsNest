@@ -36,6 +36,11 @@ app.use('/recruiter', recruiterRoutes)
 app.use('/model', modelRoutes)
 app.use('/events', eventRoutes)
 
+app.use((req, res, next) => {
+    const error = new Error('Not Found')
+    res.status(404).json(`404: ${error.message}`)
+})
+
 let port = process.env.PORT || 4000
 
 app.listen(port, () => {
