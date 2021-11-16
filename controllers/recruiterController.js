@@ -152,7 +152,7 @@ const profileImage = async (req, res) => {
         });
 
         user.profile_image = result.public_id
-        user.save()
+        await user.save()
 
         return res.status(200).send('Profile Image Updated Successfully!')
     } catch (error) {
