@@ -10,7 +10,6 @@ const createAccount = async (req, res, next) => {
     const check = await Models.findOne({ where: { userId: req.user.id } })
     if (check) return res.status(400).send('Model already has an account')
 
-    console.log(age, complexion)
     try {
         const result = await cloudinary.uploader.
             upload(fileStr, {
