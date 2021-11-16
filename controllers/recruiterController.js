@@ -1,6 +1,7 @@
 const { Recruiter, User, Document, Social_Media, Models } = require("../models");
 const cloudinary = require("../utils/cloudinary");
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
+const sequelize = require('sequelize')
 
 const createAccount = async (req, res) => {
     const { company_name, country, state, zip, phone_no, website, fileStr } = req.body;
@@ -269,6 +270,33 @@ const getModels = async (req, res) => {
     }
 }
 
+const search = async (req, res) => {
+    const name = req.query.name
+
+    try {
+        const user = await User.findAll({
+            where: {
+                full_name: sequelize.where(sequelize.fn('LOWER', sequelize.col('full_name')), 'LIKE', '%' + name.toLowerCase() + '%'),
+                role: 'model'
+            },
+            include: 'model'
+        })
+
+        const model = user.map(user => {
+            return {
+                id: user.model.userId,
+                full_name: user.full_name,
+                profile_image: user.model.profile_image
+            }
+        })
+
+        return res.status(200).json(model)
+
+    } catch (error) {
+        res.status(400).json(error.message)
+    }
+}
+
 const getOneRecruiter = async (req, res) => {
     const { id } = req.params
     try {
@@ -298,5 +326,6 @@ module.exports = {
     editDetails,
     changePassword,
     getModels,
+    search,
     getOneRecruiter
 };

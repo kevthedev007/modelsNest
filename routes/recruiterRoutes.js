@@ -10,6 +10,7 @@ const {
     editDetails,
     changePassword,
     getModels,
+    search,
     getOneRecruiter
 } = require("../controllers/recruiterController");
 const { verifyToken, recruiter_role } = require("../utils/verify");
@@ -23,6 +24,7 @@ router.get("/details", [verifyToken, recruiter_role], getDetails);
 router.post("/details", [verifyToken, recruiter_role], editDetails);
 router.post("/change-password", [verifyToken, recruiter_role], changePassword);
 router.get("/models", [verifyToken, recruiter_role], getModels);
+router.get("/search", [verifyToken, recruiter_role], search);
 router.get("/profile/:id", [verifyToken, recruiter_role], getOneRecruiter);
 
 // router.get('/allrecruiters', allRecruiters)
