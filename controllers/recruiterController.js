@@ -76,35 +76,61 @@ const dashboard = async (req, res) => {
     }
 };
 
-const getDetails = async (req, res) => {
+
+const getSocials = async (req, res) => {
     try {
         const details = await User.findOne({
-            where: { id: req.user.id },
-            include: 'recruiter'
-        })
-        return res.status(200).json({
-            details: {
-                full_name: details.full_name,
-                profile_image: details.recruiter.profile_image,
-                company_name: details.recruiter.company_name,
-                country: details.recruiter.country,
-                phone_no: details.recruiter.phone_no,
-                website: details.recruiter.website
-            }
+            where: {
+                id: req.user.id
+            },
+            include: ['recruiter', 'social_media']
         })
 
+        return res.status(200).json({
+            full_name: details.full_name,
+            profile_image: details.recruiter.profile_image,
+            phone_no: details.recruiter.phone_no,
+            social_media: details.social_media
+        })
     } catch (error) {
-        res.status(400).json(error.message)
+        return res.status(500).send(error.message);
     }
 }
 
-const socials = async (req, res) => {
+
+const editSocials = async (req, res) => {
     const { twitter, instagram, facebook, tiktok } = req.body;
 
     try {
-        const addSocial = await Social_Media.create({ userId: req.user.id, twitter, instagram, facebook, tiktok })
+        //if social_media hasnt been provided
+        const check = await Social_Media.findOne({ where: { userId: req.user.id } })
+        if (!check) {
+            const addSocial = await Social_Media.create({ userId: req.user.id, twitter, instagram, facebook, tiktok })
 
-        return res.status(200).send('Accounts Added Successfully')
+            return res.status(200).send('Accounts Added Successfully')
+        }
+
+        //update social media details
+        const match = {};
+
+        if (req.body.twitter) {
+            match.twitter = req.body.twitter
+        }
+
+        if (req.body.instagram) {
+            match.instagram = req.body.instagram
+        }
+
+        if (req.body.facebook) {
+            match.facebook = req.body.facebook
+        }
+
+        if (req.body.tiktok) {
+            match.tiktok = req.body.tiktok
+        }
+
+        const edit = await Social_Media.update(match, { where: { userId: req.user.id } })
+        return res.status(200).send('Accounts Updated Successful')
 
     } catch (error) {
         res.status(400).json(error.message)
@@ -133,8 +159,30 @@ const profileImage = async (req, res) => {
     }
 }
 
-const editDetails = async (req, res) => {
+const getDetails = async (req, res) => {
+    try {
+        const details = await User.findOne({
+            where: { id: req.user.id },
+            include: 'recruiter'
+        })
+        return res.status(200).json({
+            details: {
+                full_name: details.full_name,
+                profile_image: details.recruiter.profile_image,
+                company_name: details.recruiter.company_name,
+                country: details.recruiter.country,
+                phone_no: details.recruiter.phone_no,
+                website: details.recruiter.website,
+            }
+        })
 
+    } catch (error) {
+        res.status(400).json(error.message)
+    }
+}
+
+
+const editDetails = async (req, res) => {
     try {
         const match = {};
 
@@ -221,20 +269,18 @@ const getModels = async (req, res) => {
     }
 }
 
-const getOneModel = async (req, res) => {
+const getOneRecruiter = async (req, res) => {
     const { id } = req.params
     try {
-        const model = await User.findOne({
+        const recruiter = await User.findOne({
             where: {
                 id: id,
-                role: 'model'
+                role: 'recruiter'
             },
-            include: 'model'
+            include: 'recruiter'
         })
 
-        return res.status(200).json({
-
-        })
+        return res.status(200).json(recruiter)
     } catch (error) {
         res.status(400).json(error.message)
     }
@@ -245,11 +291,12 @@ const getOneModel = async (req, res) => {
 module.exports = {
     createAccount,
     dashboard,
-    socials,
+    getSocials,
+    editSocials,
     profileImage,
     getDetails,
     editDetails,
     changePassword,
     getModels,
-    getOneModel
+    getOneRecruiter
 };
