@@ -67,7 +67,7 @@ const confirmation = async (req, res) => {
     );
 
     user.confirmation_code = null;
-    user.save()
+    await user.save()
 
     res.redirect("https://themodelsnest.netlify.app/login");
     // return res.send('account verified')
