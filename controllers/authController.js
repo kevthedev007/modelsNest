@@ -65,7 +65,7 @@ const confirmation = async (req, res) => {
       { verified: true },
       { where: { confirmation_code } }
     );
-    res.redirect("http://localhost:3000/login");
+    res.redirect("https://themodelsnest.netlify.app/login");
     // return res.send('account verified')
   } catch (err) {
     return res.status(400).send(err);
