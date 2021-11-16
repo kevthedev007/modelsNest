@@ -2,7 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const compression = require('compression')
-const logger = require('morgan')
+// const logger = require('morgan')
 
 
 if (process.env.NODE_ENV !== 'production') {
@@ -23,7 +23,7 @@ const eventRoutes = require('./routes/eventRoutes')
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false, limit: '60mb' }))
 app.use(bodyParser.json({ limit: '50mb' }))
-app.use(logger('dev'));
+// app.use(logger('dev'));
 app.use(compression())
 
 //routes
