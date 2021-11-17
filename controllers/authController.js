@@ -102,7 +102,7 @@ const signin = async (req, res) => {
       if (!model) hasAccount = false;
     } else {
       const recruiter = await Recruiter.findOne({ where: { userId: user.id } });
-      if (recruiter == null) hasAccount = false;
+      if (!recruiter) hasAccount = false;
     }
     console.log(hasAccount);
 
