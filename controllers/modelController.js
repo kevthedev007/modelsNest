@@ -77,6 +77,8 @@ const getSocials = async (req, res) => {
         return res.status(200).json({
             full_name: details.full_name,
             profile_image: details.model.profile_image,
+            phone_no: details.model.phone_no,
+            subscription_status: false,
             social_media: details.social_media
         })
     } catch (error) {
