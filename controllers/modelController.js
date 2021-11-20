@@ -20,7 +20,8 @@ const createAccount = async (req, res, next) => {
 
         const addDocument = await Document.create({
             userId: req.user.id,
-            image: result.public_id
+            image: result.secure_url,
+            public_id: result.public_id
         })
         return res.status(200).send('account created')
     } catch (error) {
@@ -41,6 +42,7 @@ const dashboard = async (req, res, next) => {
 
         const eventInfo = events.map(event => {
             return {
+                id: event.id,
                 name: event.name,
                 image: event.image
             }
@@ -128,13 +130,14 @@ const profileImage = async (req, res) => {
 
         const user = await Models.findOne({ where: { userId: req.user.id } })
 
-        if (user.profile_image) await cloudinary.uploader.destroy(user.profile_image)
+        if (user.profile_image) await cloudinary.uploader.destroy(user.public_id)
 
         const result = await cloudinary.uploader.upload(image, {
             upload_preset: "profile-image",
         });
 
-        user.profile_image = result.public_id
+        user.profile_image = result.secure_url;
+        user.public_id = result.public_id;
         await user.save()
 
         return res.status(200).send('Profile Image Updated Successfully!')
@@ -153,7 +156,8 @@ const uploadImage = async (req, res) => {
 
         const uploadImage = await Media.create({
             userId: req.user.id,
-            image: result.public_id
+            image: result.secure_url,
+            public_id: result.public_id
         })
 
         res.status(200).send('Image uploaded successfully')

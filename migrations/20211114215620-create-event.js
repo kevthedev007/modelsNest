@@ -29,6 +29,9 @@ module.exports = {
       about: {
         type: Sequelize.STRING
       },
+      public_id: {
+        type: Sequelize.STRING
+      },
       image: {
         type: Sequelize.STRING
       },

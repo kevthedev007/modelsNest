@@ -26,7 +26,8 @@ const addEvent = async (req, res) => {
             phone_no,
             category,
             about,
-            image: result.public_id,
+            public_id: result.public_id,
+            image: result.secure_url,
             fee,
         });
 

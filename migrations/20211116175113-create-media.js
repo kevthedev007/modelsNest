@@ -15,6 +15,9 @@ module.exports = {
           key: 'id'
         }
       },
+      public_id: {
+        type: Sequelize.STRING
+      },
       image: {
         type: Sequelize.STRING
       },

@@ -33,6 +33,7 @@ module.exports = (sequelize, DataTypes) => {
           key: "id",
         },
       },
+      public_id: DataTypes.STRING,
       image: DataTypes.STRING,
     },
     {

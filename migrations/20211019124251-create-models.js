@@ -52,6 +52,9 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
+      public_id: {
+        type: Sequelize.STRING
+      },
       profile_image: {
         type: Sequelize.STRING
       },

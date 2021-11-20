@@ -40,6 +40,7 @@ module.exports = (sequelize, DataTypes) => {
     phone_no: DataTypes.STRING,
     category: DataTypes.STRING,
     about: DataTypes.STRING,
+    public_id: DataTypes.STRING,
     image: DataTypes.STRING,
     fee: DataTypes.INTEGER
   }, {
