@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     toJSON() {
-      return { ...this.get(), id: undefined, userId: undefined, createdAt: undefined, updatedAt: undefined }
+      return { ...this.get(), userId: undefined, public_id: undefined, createdAt: undefined, updatedAt: undefined }
     }
   };
   Media.init({

@@ -11,7 +11,8 @@ const {
     getDetails,
     editDetails,
     changePassword,
-    getMedia
+    getMedia,
+    deleteMedia
 } = require("../controllers/modelController");
 const { verifyToken, model_role } = require("../utils/verify");
 
@@ -25,6 +26,7 @@ router.get("/details", [verifyToken, model_role], getDetails);
 router.post("/details", [verifyToken, model_role], editDetails);
 router.post("/change-password", [verifyToken, model_role], changePassword);
 router.get("/media", [verifyToken, model_role], getMedia);
+router.delete("/delete-media", [verifyToken, model_role], deleteMedia)
 
 
 router.get("/profile/:id", verifyToken, getOneModel);

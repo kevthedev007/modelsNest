@@ -282,7 +282,27 @@ const getMedia = async (req, res) => {
 }
 
 
+const deleteMedia = async (req, res) => {
+    const { id } = req.params;
 
+    try {
+        const image = await Media.findOne({
+            where: {
+                id: id,
+                userId: req.user.id,
+            }
+        })
+
+        await cloudinary.uploader.destroy(image.public_id);
+
+        await image.destroy()
+
+        return res.status(200).json('Image deleted from media successfully')
+
+    } catch (error) {
+        res.status(400).json(error.message)
+    }
+}
 
 const getOneModel = async (req, res) => {
     const { id } = req.params
@@ -312,5 +332,6 @@ module.exports = {
     editDetails,
     changePassword,
     getMedia,
+    deleteMedia,
     getOneModel
 }
