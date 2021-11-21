@@ -1,5 +1,6 @@
 const { Models, User, Document, Social_Media, Event, Media } = require('../models');
 const cloudinary = require('../utils/cloudinary')
+const bcrypt = require('bcrypt')
 
 
 const createAccount = async (req, res, next) => {

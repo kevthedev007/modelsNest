@@ -19,16 +19,21 @@
     "google-auth-library": "^7.10.0",
     "handlebars": "^4.7.7",
     "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.1",
+    "node-cron": "^3.0.0",
     "nodemailer": "^6.7.0",
     "nodemailer-express-handlebars": "^4.0.0",
     "nodemailer-smtp-transport": "^2.7.4",
     "pg": "^8.7.1",
     "pg-hstore": "^2.3.4",
+    "request": "^2.88.2",
     "sequelize": "^6.7.0",
     "sequelize-cli": "^6.2.0"
   },
   "devDependencies": {
     "dotenv": "^10.0.0",
-    "morgan": "^1.10.0"
+    "ejs": "^3.1.6",
+    "morgan": "^1.10.0",
+    "pug": "^3.0.2"
   }
 }

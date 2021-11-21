@@ -18,32 +18,32 @@ const readHTMLFile = function (path, callback) {
 };
 
 
-// let transporter = nodemailer.createTransport({
-//   service: "gmail",
-//   port: 465,
-//   secure: true,
-//   auth: {
-//     user: process.env.GMAIL_USER, // generated ethereal user
-//     pass: process.env.GMAIL_PASS, // generated ethereal password
-//   },
-//   tls: {
-//     rejectUnauthorized: false
-//   }
-// });
+let transporter = nodemailer.createTransport({
+  service: "gmail",
+  port: 465,
+  secure: true,
+  auth: {
+    user: process.env.GMAIL_USER, // generated ethereal user
+    pass: process.env.GMAIL_PASS, // generated ethereal password
+  },
+  tls: {
+    rejectUnauthorized: false
+  }
+});
 
-let transporter = nodemailer.createTransport(
-  smtp({
-    host: 'in-v3.mailjet.com',
-    port: 587,
-    auth: {
-      user: process.env.MAILJET_USER,
-      pass: process.env.MAILJET_PASS
-    },
-    tls: {
-      rejectUnauthorized: false
-    }
-  })
-)
+// let transporter = nodemailer.createTransport(
+//   smtp({
+//     host: 'in-v3.mailjet.com',
+//     port: 587,
+//     auth: {
+//       user: process.env.MAILJET_USER,
+//       pass: process.env.MAILJET_PASS
+//     },
+//     tls: {
+//       rejectUnauthorized: false
+//     }
+//   })
+// )
 
 function sendConfirmationMail(email, name, token) {
 
@@ -98,5 +98,22 @@ function sendPasswordResetMail(email, name, id, token, res) {
   })
 }
 
+function sendBookModelMail(email, description) {
+  let mailTransport = {
+    from: '"Models Nest" <modelsnestnigeria@gmail.com>',
+    to: "kelvinhotshot@gmail.com", // list of receivers
+    subject: "Book A Model", // Subject line
+    html: `<h1>Book A Model Request</h1>
+           <h2>Request sent from: ${email}</h2>
+           <h2>Description: </h2> <p>${description}</p>
+          `
+  };
 
-module.exports = { sendConfirmationMail, sendPasswordResetMail }
+  transporter.sendMail(mailTransport, (error, info) => {
+    if (error) return res.json('an error occured, could not send mail')
+    console.log("mail sent")
+  });
+}
+
+
+module.exports = { sendConfirmationMail, sendPasswordResetMail, sendBookModelMail }

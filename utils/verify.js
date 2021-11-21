@@ -21,7 +21,7 @@ const recruiter_role = async (req, res, next) => {
     console.log(req.user.id)
     try {
         const recruiter = await User.findOne({ where: { id: req.user.id, role: "recruiter" } })
-        console.log(recruiter)
+
         if (recruiter) {
             next()
         } else {
@@ -36,11 +36,11 @@ const model_role = async (req, res, next) => {
     try {
         const model = await User.findOne({ where: { id: req.user.id, role: "model" } })
         if (model) {
-         next()
+            next()
         } else {
             return res.status(403).send('Model role required!')
         }
-            
+
     } catch (err) {
         res.status(500).send(err)
     }

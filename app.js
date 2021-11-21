@@ -12,11 +12,22 @@ if (process.env.NODE_ENV !== 'production') {
 
 const app = express()
 
+
+//test payment
+// const path = require('path');
+// app.use(express.static(path.join(__dirname, "public")));
+// app.set('view engine', 'ejs');
+//test payment
+
+
+
 //importing routes
 const authRoutes = require('./routes/authRoutes');
 const recruiterRoutes = require('./routes/recruiterRoutes')
 const modelRoutes = require('./routes/modelRoutes')
 const eventRoutes = require('./routes/eventRoutes')
+const paymentRoutes = require('./routes/paymentRoutes')
+const job = require('./job')
 
 
 //adding middlewares
@@ -31,10 +42,18 @@ app.get('/', (req, res) => {
     res.status(200).json({ message: 'welcome to Model Nests API' })
 })
 
+// //test for payment
+// app.get('/payment', (req, res) => {
+//     res.render('index.ejs');
+// });
+// //test for payment
+
 app.use('/auth', authRoutes)
 app.use('/recruiter', recruiterRoutes)
 app.use('/model', modelRoutes)
 app.use('/events', eventRoutes)
+app.use('/payment', paymentRoutes)
+
 
 app.use((req, res, next) => {
     const error = new Error('Not Found')

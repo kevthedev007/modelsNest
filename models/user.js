@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({ Recruiter, Models, Document, Social_Media, Event, Media }) {
+    static associate({ Recruiter, Models, Document, Social_Media, Event, Media, Payment, Book_Model, Subscription }) {
       // define association here
       User.hasOne(Recruiter, {
         foreignKey: { name: "userId", allowNull: false },
@@ -32,6 +32,18 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(Media, {
         foreignKey: { name: 'userId', allowNull: false },
         as: 'media'
+      })
+      User.hasMany(Payment, {
+        foreignKey: { name: 'userId', allowNull: false },
+        as: 'payment'
+      })
+      User.hasMany(Book_Model, {
+        foreignKey: { name: 'userId', allowNull: false },
+        as: 'book_model'
+      })
+      User.hasMany(Subscription, {
+        foreignKey: { name: 'userId', allowNull: false },
+        as: 'subscription'
       })
     }
 
