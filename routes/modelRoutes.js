@@ -26,7 +26,7 @@ router.get("/details", [verifyToken, model_role], getDetails);
 router.post("/details", [verifyToken, model_role], editDetails);
 router.post("/change-password", [verifyToken, model_role], changePassword);
 router.get("/media", [verifyToken, model_role], getMedia);
-router.delete("/delete-media", [verifyToken, model_role], deleteMedia)
+router.delete("/delete-media/:id", [verifyToken, model_role], deleteMedia)
 
 
 router.get("/profile/:id", verifyToken, getOneModel);
