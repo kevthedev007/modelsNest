@@ -18,13 +18,14 @@ const BookPayment = async (req, res) => {
 
         const form = {
             email: user.email,
-            amount: 1000 * 100
+            amount: 1000 * 100,
         }
 
         form.metadata = {
             id: user.id,
             purpose: "Book-Model",
             bookingId: bookModel.id,
+            description: description
         }
 
         initializePayment(form, (error, body) => {
@@ -88,7 +89,7 @@ const verify = async (req, res) => {
 
         const { reference, amount } = response.data;
         const { email } = response.data.customer;
-        const { id, purpose, bookingId } = response.data.metadata;
+        const { id, purpose, bookingId, description } = response.data.metadata;
 
         const payment = Payment.build({
             userId: id,
@@ -104,9 +105,10 @@ const verify = async (req, res) => {
 
             //book_model or subscription table
             if (purpose == "Book-Model") {
+                console.log(description)
                 //send mail
                 sendBookModelMail(email, description);
-
+                console.log('there')
                 //adding payment reference in book model
                 const book = Book_Model.update({ payment_reference: reference, success: true }, { where: { id: bookingId } })
                     .then((book) => console.log('book'));

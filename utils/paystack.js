@@ -1,7 +1,7 @@
 const request = require('request')
 
 const paystack = (request) => {
-    const MySecretKey = 'Bearer sk_test_ae736dbdb435609cc8953caef839c9d4f6980c51';
+    const MySecretKey = process.env.PAYSTACK_SECRET;
     //sk_test_xxxx to be replaced by your own secret key
     const initializePayment = (form, mycallback) => {
         const option = {

@@ -4,7 +4,7 @@ const { BookPayment, subscriptionPayment, verify } = require('../controllers/pay
 const { verifyToken, recruiter_role, model_role } = require("../utils/verify");
 
 
-router.post('/bookmodel', [verifyToken, recruiter_role], BookPayment);
+router.post('/bookmodel', verifyToken, BookPayment);
 router.post('/subscription', verifyToken, subscriptionPayment);
 router.get('/verify', verify);
 
