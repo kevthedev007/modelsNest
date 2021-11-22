@@ -34,7 +34,7 @@ const readHTMLFile = function (path, callback) {
 let transporter = nodemailer.createTransport(
   smtp({
     host: 'in-v3.mailjet.com',
-    port: 25,
+    port: 587,
     auth: {
       user: process.env.MAILJET_USER,
       pass: process.env.MAILJET_PASS
