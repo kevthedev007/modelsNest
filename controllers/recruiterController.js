@@ -73,8 +73,8 @@ const dashboard = async (req, res) => {
             models: modelsInfo
         });
 
-    } catch (err) {
-        return res.status(500).json(err);
+    } catch (error) {
+        return res.status(500).json(error.message);
     }
 };
 
