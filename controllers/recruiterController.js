@@ -54,7 +54,6 @@ const dashboard = async (req, res) => {
         })
 
         const modelsInfo = models.map(model => {
-            console.log(models)
             return {
                 id: model.userId,
                 full_name: model.user.full_name,
@@ -247,22 +246,19 @@ const getModels = async (req, res) => {
 
     try {
         //get all models
-        const models = await User.findAll({
-            where: {
-                role: 'model'
-            },
+        const models = await Models.findAll({
             include: 'model',
         })
 
-        const modelsInfo = models.map(Model => {
+        const modelsInfo = models.map(user => {
             return {
-                id: Model.model.userId,
-                full_name: Model.full_name,
-                profile_image: Model.model.profile_image,
-                age: Model.model.age,
-                size: Model.model.body_size,
-                state: Model.model.state,
-                complexion: Model.model.complexion
+                id: model.userId,
+                full_name: model.user.full_name,
+                profile_image: model.profile_image,
+                age: model.age,
+                size: model.body_size,
+                state: model.state,
+                complexion: model.complexion
             }
         })
 
