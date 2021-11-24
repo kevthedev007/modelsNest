@@ -47,20 +47,20 @@ const dashboard = async (req, res) => {
         });
 
         //get 5 models
-        const models = await User.findAll({
-            where: {
-                role: 'model'
-            },
-            include: 'model',
-            limit: 5
-        })
-        const modelsInfo = models.map(Model => {
-            return {
-                id: Model.model.userId,
-                full_name: Model.full_name,
-                profile_image: Model.model.profile_image
-            }
-        })
+        // const models = await User.findAll({
+        //     where: {
+        //         role: 'model'
+        //     },
+        //     include: 'model',
+        //     limit: 5
+        // })
+        // const modelsInfo = models.map(Model => {
+        //     return {
+        //         id: Model.model.userId,
+        //         full_name: Model.full_name,
+        //         profile_image: Model.model.profile_image
+        //     }
+        // })
 
         return res.status(200).json({
             info: {
@@ -70,7 +70,7 @@ const dashboard = async (req, res) => {
                 document: info.document,
                 social_media: info.social_media
             },
-            models: modelsInfo
+            // models: modelsInfo
         });
 
     } catch (error) {
