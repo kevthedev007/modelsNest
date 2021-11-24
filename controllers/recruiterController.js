@@ -247,7 +247,7 @@ const getModels = async (req, res) => {
     try {
         //get all models
         const models = await Models.findAll({
-            include: 'model',
+            include: 'user',
         })
 
         const modelsInfo = models.map(user => {
