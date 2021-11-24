@@ -271,24 +271,32 @@ const search = async (req, res) => {
     const name = req.query.name
 
     try {
-        const user = await User.findAll({
+        const users = await User.findAll({
             where: {
                 full_name: sequelize.where(sequelize.fn('LOWER', sequelize.col('full_name')), 'LIKE', '%' + name.toLowerCase() + '%'),
                 role: 'model'
             },
-            include: 'model'
         })
-
-        const model = user.map(user => {
-            return {
-                id: user.model.userId,
-                full_name: user.full_name,
-                profile_image: user.model.profile_image
+        console.log(users)
+        //check if model is fully registered and return the model
+        if (users && users.length > 0) {
+            let models = [];
+            for (let i = 0; i < users.length; i++) {
+                const model = await Models.findOne({
+                    where:
+                        { userId: users[i].id },
+                    include: 'user'
+                })
+                if (model) {
+                    models.push(model)
+                } else {
+                    return res.status(200).send('model does not exist')
+                }
             }
-        })
+            return res.status(200).json(models)
+        }
 
-        return res.status(200).json(model)
-
+        return res.status(200).send('model does not exist')
     } catch (error) {
         res.status(400).json(error.message)
     }
