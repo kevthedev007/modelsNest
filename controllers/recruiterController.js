@@ -48,7 +48,7 @@ const dashboard = async (req, res) => {
         });
 
         //get 5 models
-        const theModels = await User.findAll({
+        const models = await User.findAll({
             where: {
                 role: 'model'
             },
@@ -56,12 +56,11 @@ const dashboard = async (req, res) => {
             limit: 5
         })
 
-        const modelsInfo = theModels.map(Model => {
-            console.log(Model)
+        const modelsInfo = models.map(user => {
             return {
-                id: Model.model.userId,
-                full_name: Model.full_name,
-                profile_image: Model.model.profile_image
+                id: user.model.userId,
+                full_name: user.full_name,
+                profile_image: user.model.profile_image
             }
         })
 
