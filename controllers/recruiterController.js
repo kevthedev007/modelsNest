@@ -2,7 +2,6 @@ const { Recruiter, User, Document, Social_Media, Models, Sequelize } = require("
 const cloudinary = require("../utils/cloudinary");
 const bcrypt = require('bcrypt');
 const sequelize = require('sequelize');
-const { QueryTypes } = require('sequelize')
 
 const createAccount = async (req, res) => {
     const { company_name, country, state, zip, phone_no, website, fileStr } = req.body;
