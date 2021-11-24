@@ -54,9 +54,9 @@ const dashboard = async (req, res) => {
             include: 'model',
             limit: 5
         })
-        console.log(models)
 
         const modelsInfo = models.map(Model => {
+            console.log(Model)
             return {
                 id: Model.model.userId,
                 full_name: Model.full_name,
