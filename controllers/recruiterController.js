@@ -1,7 +1,8 @@
-const { Recruiter, User, Document, Social_Media, Models } = require("../models");
+const { Recruiter, User, Document, Social_Media, Models, Sequelize } = require("../models");
 const cloudinary = require("../utils/cloudinary");
 const bcrypt = require('bcrypt');
-const sequelize = require('sequelize')
+const sequelize = require('sequelize');
+const { QueryTypes } = require('sequelize')
 
 const createAccount = async (req, res) => {
     const { company_name, country, state, zip, phone_no, website, fileStr } = req.body;
@@ -47,7 +48,7 @@ const dashboard = async (req, res) => {
         });
 
         //get 5 models
-        const models = await User.findAll({
+        const theModels = await User.findAll({
             where: {
                 role: 'model'
             },
@@ -55,12 +56,12 @@ const dashboard = async (req, res) => {
             limit: 5
         })
 
-        const modelsInfo = models.map(Model => {
+        const modelsInfo = theModels.map(Model => {
             console.log(Model)
             return {
-                id: Model.model.dataValues.userId,
+                id: Model.model.userId,
                 full_name: Model.full_name,
-                profile_image: Model.model.dataValues.profile_image
+                profile_image: Model.model.profile_image
             }
         })
 
