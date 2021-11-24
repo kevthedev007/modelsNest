@@ -310,12 +310,11 @@ const deleteMedia = async (req, res) => {
 const getOneModel = async (req, res) => {
     const { id } = req.params
     try {
-        const model = await User.findOne({
+        const model = await Models.findOne({
             where: {
-                id: id,
-                role: 'model'
+                userId: id,
             },
-            include: 'model'
+            include: 'user'
         })
 
         return res.status(200).json(model)
