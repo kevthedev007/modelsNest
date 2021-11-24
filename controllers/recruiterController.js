@@ -250,7 +250,7 @@ const getModels = async (req, res) => {
             include: 'user',
         })
 
-        const modelsInfo = models.map(user => {
+        const modelsInfo = models.map(model => {
             return {
                 id: model.userId,
                 full_name: model.user.full_name,
