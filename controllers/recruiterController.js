@@ -43,7 +43,7 @@ const dashboard = async (req, res) => {
     try {
         const info = await User.findOne({
             where: { id: req.user.id },
-            include: ['recruiter', 'document', 'social_media'],
+            include: ['document', 'social_media'],
         });
 
         //get 5 models
