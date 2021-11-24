@@ -58,9 +58,9 @@ const dashboard = async (req, res) => {
         const modelsInfo = models.map(Model => {
             console.log(Model)
             return {
-                id: Model.model.userId,
+                id: Model.model.dataValues.userId,
                 full_name: Model.full_name,
-                profile_image: Model.model.profile_image
+                profile_image: Model.model.dataValues.profile_image
             }
         })
 
