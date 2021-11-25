@@ -27,7 +27,6 @@ const recruiterRoutes = require('./routes/recruiterRoutes')
 const modelRoutes = require('./routes/modelRoutes')
 const eventRoutes = require('./routes/eventRoutes')
 const paymentRoutes = require('./routes/paymentRoutes')
-const job = require('./job')
 
 
 //adding middlewares
@@ -64,4 +63,5 @@ let port = process.env.PORT || 4000
 
 app.listen(port, () => {
     console.log(`server started at port ${port}`)
+    // require('./job')
 })

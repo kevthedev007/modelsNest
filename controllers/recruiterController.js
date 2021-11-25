@@ -277,7 +277,7 @@ const search = async (req, res) => {
                 role: 'model'
             },
         })
-        console.log(users)
+
         //check if model is fully registered and return the model
         if (users && users.length > 0) {
             let models = [];

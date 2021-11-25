@@ -317,7 +317,9 @@ const getOneModel = async (req, res) => {
             include: 'user'
         })
 
-        return res.status(200).json(model)
+        const images = await Media.findAll({ where: { userId: id } })
+
+        return res.status(200).json({ model, images })
     } catch (error) {
         res.status(400).json(error.message)
     }
