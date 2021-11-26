@@ -4,7 +4,7 @@ const cloudinary = require("../utils/cloudinary");
 
 const getEvents = async (req, res) => {
     try {
-        const events = await Event.findAll({ raw: true });
+        const events = await Event.findAll({ raw: true, order: [['createdAt', 'DESC']] });
         if (!events) return res.status(200).send("There are no available events now")
 
         //check events owned by user
@@ -19,11 +19,6 @@ const getEvents = async (req, res) => {
                 availableEvents.push(events[i])
             }
         }
-        // console.log(req.user.id)
-        // let available = events.map(v => {
-        //     v.isActive = true;
-        //     return events;
-        // })
 
         return res.status(200).json(availableEvents)
 
