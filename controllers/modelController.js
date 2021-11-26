@@ -39,7 +39,7 @@ const dashboard = async (req, res, next) => {
             })
 
         //get events
-        const events = await Event.findAll({ limit: 5 })
+        const events = await Event.findAll({ limit: 5, order: [['createdAt', 'DESC']] })
 
         const eventInfo = events.map(event => {
             return {
