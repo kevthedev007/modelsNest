@@ -1,3 +1,4 @@
+const { raw } = require("body-parser");
 const { User, Event, Recruiter } = require("../models/index");
 const cloudinary = require("../utils/cloudinary");
 
@@ -61,9 +62,10 @@ const addEvent = async (req, res) => {
 const getOneEvent = async (req, res) => {
     const { id } = req.params;
     try {
-        const event = await Event.findOne({ where: { id } })
+        const event = await Event.findOne({ where: { id }, raw: true })
 
-        return res.status(200).json(event)
+        if (event.userId == req.user.id) return res.status(200).json({ ...event, isUser: true })
+        else return res.status(200).json({ ...event, isUser: false })
     } catch (error) {
         res.status(500).json(error.message)
     }
@@ -71,14 +73,9 @@ const getOneEvent = async (req, res) => {
 
 const myEvents = async (req, res) => {
     try {
-        const events = await Event.findAll({ where: { userId: req.user.id }, raw: true })
+        const events = await Event.findAll({ where: { userId: req.user.id } })
 
-        let myEvents = [];
-        for (let i in events) {
-            events[i].isUser = true
-            myEvents.push(events[i])
-        }
-        return res.status(200).json(myEvents)
+        return res.status(200).json(events)
     } catch (error) {
         res.status(500).json(error.message)
     }
