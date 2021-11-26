@@ -64,7 +64,7 @@ const deleteEvent = async (req, res) => {
         // const event = await Event.destroy({ where: { id } })
 
         //delete image in cloud
-        const event = await Event.findOne({ where: { id } })
+        const event = await Event.findOne({ where: { id, userId: req.user.id } })
         await cloudinary.uploader.destroy(event.image)
 
         await event.destroy()
