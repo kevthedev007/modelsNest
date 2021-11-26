@@ -3,8 +3,29 @@ const cloudinary = require("../utils/cloudinary");
 
 const getEvents = async (req, res) => {
     try {
-        const events = await Event.findAll();
-        return res.status(200).json(events)
+        const events = await Event.findAll({ raw: true });
+        if (!events) return res.status(200).send("There are no available events now")
+
+        //check events owned by user
+        let availableEvents = [];
+
+        for (let i in events) {
+            if (events[i].userId == req.user.id) {
+                events[i].isUser = true
+                availableEvents.push(events[i])
+            } else {
+                events[i].isUser = false
+                availableEvents.push(events[i])
+            }
+        }
+        // console.log(req.user.id)
+        // let available = events.map(v => {
+        //     v.isActive = true;
+        //     return events;
+        // })
+
+        return res.status(200).json(availableEvents)
+
     } catch (error) {
         res.status(500).json(error.message);
     }
@@ -50,8 +71,14 @@ const getOneEvent = async (req, res) => {
 
 const myEvents = async (req, res) => {
     try {
-        const events = await Event.findAll({ where: { userId: req.user.id } })
-        return res.status(200).json(events)
+        const events = await Event.findAll({ where: { userId: req.user.id }, raw: true })
+
+        let myEvents = [];
+        for (let i in events) {
+            events[i].isUser = true
+            myEvents.push(events[i])
+        }
+        return res.status(200).json(myEvents)
     } catch (error) {
         res.status(500).json(error.message)
     }
