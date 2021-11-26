@@ -72,7 +72,7 @@ const getSocials = async (req, res) => {
             where: {
                 id: req.user.id
             },
-            include: ['model', 'social_media']
+            include: ['model', 'social_media', 'media']
         })
 
         return res.status(200).json({
@@ -80,7 +80,8 @@ const getSocials = async (req, res) => {
             profile_image: details.model.profile_image,
             phone_no: details.model.phone_no,
             subscription_status: false,
-            social_media: details.social_media
+            social_media: details.social_media,
+            images: details.media
         })
     } catch (error) {
         return res.status(500).send(error.message);
