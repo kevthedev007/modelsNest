@@ -10,11 +10,11 @@ const BookPayment = async (req, res) => {
     try {
         const bookModel = await Book_Model.create({ userId: req.user.id, description })
 
-        // const user = await User.findOne({
-        //     where: {
-        //         id: req.user.id
-        //     }
-        // })
+        const user = await User.findOne({
+            where: {
+                id: req.user.id
+            }
+        })
 
         const form = {
             email: user.email,
@@ -22,7 +22,7 @@ const BookPayment = async (req, res) => {
         }
 
         form.metadata = {
-            // id: user.id,
+            id: user.id,
             purpose: "Book-Model",
             bookingId: bookModel.id,
             description: description
