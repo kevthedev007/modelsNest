@@ -30,7 +30,10 @@ const paymentRoutes = require('./routes/paymentRoutes')
 
 
 //adding middlewares
-app.use(cors())
+app.use(cors({
+    origin: '*',
+    methods: ["GET", "POST"]
+}))
 app.use(bodyParser.urlencoded({ extended: false, limit: '60mb' }))
 app.use(bodyParser.json({ limit: '50mb' }))
 // app.use(logger('dev'));
