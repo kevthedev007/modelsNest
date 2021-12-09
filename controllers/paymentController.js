@@ -83,7 +83,7 @@ const verify = async (req, res) => {
         if (error) {
             //handle errors appropriately
             console.log(error)
-            return res.redirect('/error');
+            return res.redirect('https://themodelsnest.netlify.app/payment/error');
         }
         let response = JSON.parse(body);
 
@@ -100,7 +100,7 @@ const verify = async (req, res) => {
         payment.save().then((success) => {
             if (!success) {
                 //handle error when the donor is not found
-                res.redirect('/error')
+                res.redirect('https://themodelsnest.netlify.app/payment/error')
             }
 
             //book_model or subscription table
@@ -123,9 +123,9 @@ const verify = async (req, res) => {
                 })
                 sub.save().then((sub) => console.log('sub done'))
             }
-            res.redirect('/success');
+            res.redirect('https://themodelsnest.netlify.app/payment/success');
         }).catch((e) => {
-            res.redirect('/error');
+            res.redirect('https://themodelsnest.netlify.app/payment/error');
         })
     })
 }
