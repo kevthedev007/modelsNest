@@ -1,4 +1,3 @@
-const { raw } = require("body-parser");
 const { User, Event, Recruiter } = require("../models/index");
 const cloudinary = require("../utils/cloudinary");
 
@@ -84,7 +83,7 @@ const deleteEvent = async (req, res) => {
 
         //delete image in cloud
         const event = await Event.findOne({ where: { id, userId: req.user.id } })
-        await cloudinary.uploader.destroy(event.image)
+        await cloudinary.uploader.destroy(event.public_id)
 
         await event.destroy()
         return res.status(200).send('Event deleted successfully')

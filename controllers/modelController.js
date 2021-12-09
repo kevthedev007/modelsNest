@@ -4,7 +4,6 @@ const bcrypt = require('bcrypt')
 
 
 const createAccount = async (req, res, next) => {
-    console.log(req.body)
     const { age, complexion, body_size, bust, waist, hips, height, category, country, state, zip, phone_no, fileStr } = req.body
 
     //check if model already has an account

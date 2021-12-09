@@ -27,12 +27,12 @@ const recruiterRoutes = require('./routes/recruiterRoutes')
 const modelRoutes = require('./routes/modelRoutes')
 const eventRoutes = require('./routes/eventRoutes')
 const paymentRoutes = require('./routes/paymentRoutes')
+const storeRoutes = require('./routes/storeRoute')
 
 
 //adding middlewares
 app.use(cors({
-    origin: '*',
-    methods: ["GET", "POST"]
+    origin: '*'
 }))
 app.use(bodyParser.urlencoded({ extended: false, limit: '60mb' }))
 app.use(bodyParser.json({ limit: '50mb' }))
@@ -55,6 +55,7 @@ app.use('/recruiter', recruiterRoutes)
 app.use('/model', modelRoutes)
 app.use('/events', eventRoutes)
 app.use('/payment', paymentRoutes)
+app.use('/store', storeRoutes)
 
 
 app.use((req, res, next) => {
