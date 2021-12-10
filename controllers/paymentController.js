@@ -1,5 +1,5 @@
 // const request = require('request');
-const fetch = require('node-fetch')
+const fetch = require('node-fetch');
 const { User, Payment, Book_Model, Subscription } = require("../models");
 // const { initializePayment, verifyPayment } = require('../utils/paystack')(request)
 const { sendBookModelMail } = require('../utils/sendmail');
@@ -39,13 +39,15 @@ const verify = async (req, res) => {
     const MySecretKey = process.env.PAYSTACK_SECRET;
 
     try {
-        const data = await fetch('https://api.paystack.co/transaction/verify/' + encodeURIComponent(ref), {
+        const settings = {
+            method: 'GET',
             headers: {
-                authorization: MySecretKey,
+                'Authorization': process.env.PAYSTACK_SECRET,
                 'content-type': 'application/json',
                 'cache-control': 'no-cache'
             }
-        })
+        }
+        const data = await fetch('https://api.paystack.co/transaction/verify/' + encodeURIComponent(ref), settings);
 
         const response = await JSON.parse(data);
 
