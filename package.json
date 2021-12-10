@@ -21,7 +21,7 @@
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.29.1",
     "node-cron": "^3.0.0",
-    "node-fetch": "^3.1.0",
+    "node-fetch": "^2.6.6",
     "nodemailer": "^6.7.0",
     "nodemailer-express-handlebars": "^4.0.0",
     "nodemailer-smtp-transport": "^2.7.4",
