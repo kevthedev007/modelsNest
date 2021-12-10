@@ -39,7 +39,7 @@ const verify = async (req, res) => {
     const MySecretKey = process.env.PAYSTACK_SECRET;
 
     try {
-        const data = await fetch(`https://api.paystack.co/transaction/verify/${ref}`, {
+        const data = await fetch('https://api.paystack.co/transaction/verify/' + encodeURIComponent(ref), {
             headers: {
                 authorization: MySecretKey,
                 'content-type': 'application/json',
