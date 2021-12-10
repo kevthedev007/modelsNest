@@ -6,6 +6,34 @@ const { sendBookModelMail } = require('../utils/sendmail');
 const { calculateNextPayment } = require('../utils/subscription')
 
 
+const bookModel = async (req, res) => {
+    try {
+        const metadata = await User.findOne({
+            where: {
+            id: req.user.id
+            }
+        })
+        
+        return res.status(200).json({metadata, purpose: "Book-Model"})
+    } catch (error) {
+        res.status(500).json(error.message)
+    }
+}
+
+const subscription = async (req, res) => {
+    try {
+        const metadata = await User.findOne({
+            where: {
+            id: req.user.id
+            }
+        })
+
+        return res.status(200).json({metadata, purpose: "Subscription"})
+    } catch (error) {
+        res.status(500).json(error.message)
+    }
+}
+
 const verify = async (req, res) => {
     const { ref } = req.body;
     const MySecretKey = process.env.PAYSTACK_SECRET;
@@ -30,9 +58,6 @@ const verify = async (req, res) => {
             const { email } = response.data.customer;
             const { id, purpose, description } = response.data.metadata;
 
-            //decode id(jwt)
-            const user = jwt.verify(id, process.env.JWT_SECRET_KEY)
-
             //check if ref already exists in payment
             const checkReference = await Payment.findOne({ where: { reference } })
             if (checkReference) {
@@ -41,7 +66,7 @@ const verify = async (req, res) => {
             } else {
                 //add to database
                 const ref = await Payment.create({
-                    userId: user.id,
+                    userId: id,
                     amount,
                     purpose,
                     reference
@@ -52,7 +77,7 @@ const verify = async (req, res) => {
                     sendBookModelMail(email, description);
                     //add to book model
                     const book = await Book_Model.create({
-                        userId: user.id,
+                        userId: id,
                         description,
                         success: true,
                         payment_reference: reference
@@ -63,7 +88,7 @@ const verify = async (req, res) => {
                 if (purpose == "Subscription") {
                     //add to subscription table
                     const sub = await Subscription.create({
-                        userId: user.id,
+                        userId: id,
                         payment_reference: reference,
                         expires_in: calculateNextPayment(Date.now())
                     })
@@ -93,9 +118,6 @@ const webhook = async (req, res) => {
             const { email } = event.data.customer;
             const { id, purpose, description } = event.data.metadata;
 
-            //decode id(jwt)
-            const user = jwt.verify(id, process.env.JWT_SECRET_KEY)
-
             //check if ref already exists in payment
             const checkReference = await Payment.findOne({ where: { reference } })
             if (checkReference) {
@@ -104,7 +126,7 @@ const webhook = async (req, res) => {
             } else {
                 //add to database
                 const ref = await Payment.create({
-                    userId: user.id,
+                    userId: id,
                     amount,
                     purpose,
                     reference
@@ -115,7 +137,7 @@ const webhook = async (req, res) => {
                     sendBookModelMail(email, description);
                     //add to book model
                     const book = await Book_Model.create({
-                        userId: user.id,
+                        userId: id,
                         description,
                         success: true,
                         payment_reference: reference
@@ -126,7 +148,7 @@ const webhook = async (req, res) => {
                 if (purpose == "Subscription") {
                     //add to subscription table
                     const sub = await Subscription.create({
-                        userId: user.id,
+                        userId: id,
                         payment_reference: reference,
                         expires_in: calculateNextPayment(Date.now())
                     })
@@ -287,4 +309,4 @@ const webhook = async (req, res) => {
 // }
 
 
-module.exports = { verify, webhook }
+module.exports = { verify, webhook, bookModel, subscription }

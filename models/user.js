@@ -58,7 +58,6 @@ module.exports = (sequelize, DataTypes) => {
     toJSON() {
       return {
         ...this.get(),
-        id: undefined,
         password: undefined,
         confirmation_code: undefined,
         verified: undefined,
