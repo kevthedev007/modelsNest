@@ -1,5 +1,4 @@
-// const request = require('request');
-const fetch = require('node-fetch');
+const axios = require('axios')
 const { User, Payment, Book_Model, Subscription } = require("../models");
 // const { initializePayment, verifyPayment } = require('../utils/paystack')(request)
 const { sendBookModelMail } = require('../utils/sendmail');
@@ -10,11 +9,11 @@ const bookModel = async (req, res) => {
     try {
         const metadata = await User.findOne({
             where: {
-            id: req.user.id
+                id: req.user.id
             }
         })
-        
-        return res.status(200).json({metadata, purpose: "Book-Model"})
+
+        return res.status(200).json({ metadata, purpose: "Book-Model" })
     } catch (error) {
         res.status(500).json(error.message)
     }
@@ -24,11 +23,11 @@ const subscription = async (req, res) => {
     try {
         const metadata = await User.findOne({
             where: {
-            id: req.user.id
+                id: req.user.id
             }
         })
 
-        return res.status(200).json({metadata, purpose: "Subscription"})
+        return res.status(200).json({ metadata, purpose: "Subscription" })
     } catch (error) {
         res.status(500).json(error.message)
     }
@@ -46,13 +45,18 @@ const verify = async (req, res) => {
                 Authorization: 'Bearer sk_test_ae736dbdb435609cc8953caef839c9d4f6980c51',
             }
         }
-        console.log('here')
-        const data = await fetch("https://api.paystack.co/transaction/verify/" + ref, settings);
-        console.log(data)
-        const response = await JSON.parse(data);
-        console.log(response)
+        // const data = await fetch("https://api.paystack.co/transaction/verify/" + ref, settings);\
+        const data = await axios({
+            url: 'https://api.paystack.co/transaction/verify/' + ref,
+            headers: {
+                Authorization: 'Bearer sk_test_ae736dbdb435609cc8953caef839c9d4f6980c51'
+            }
+        })
+
+        let response = data.data;
+
         if (response.data.status == "failed") {
-            return res.status(200).json({status: false})            
+            return res.status(200).json({ status: false })
         }
 
         if (response.data.status == "success") {
@@ -64,7 +68,7 @@ const verify = async (req, res) => {
             const checkReference = await Payment.findOne({ where: { reference } })
             if (checkReference) {
                 console.log(reference)
-                return res.status(200).json({status: true})
+                return res.status(200).json({ status: true })
             } else {
                 //add to database
                 const ref = await Payment.create({
@@ -84,9 +88,9 @@ const verify = async (req, res) => {
                         success: true,
                         payment_reference: reference
                     })
-                    return res.status(200).json({status: true})
+                    return res.status(200).json({ status: true })
                 }
-        
+
                 if (purpose == "Subscription") {
                     //add to subscription table
                     const sub = await Subscription.create({
@@ -94,10 +98,10 @@ const verify = async (req, res) => {
                         payment_reference: reference,
                         expires_in: calculateNextPayment(Date.now())
                     })
-                    return res.status(200).json({status: true})
+                    return res.status(200).json({ status: true })
                 }
             }
-        }      
+        }
 
     } catch (error) {
         return res.status(400).json({
@@ -110,9 +114,9 @@ const verify = async (req, res) => {
 
 const webhook = async (req, res) => {
     const event = req.body
-    try { 
+    try {
         if (event.event == "charge.success" && event.data.status == "failed") {
-            return res.status(200).json({status: false}) 
+            return res.status(200).json({ status: false })
         }
 
         if (event.event == "charge.success" && event.data.status == "success") {
@@ -124,7 +128,7 @@ const webhook = async (req, res) => {
             const checkReference = await Payment.findOne({ where: { reference } })
             if (checkReference) {
                 console.log(reference)
-                return res.status(200).json({status: true})
+                return res.status(200).json({ status: true })
             } else {
                 //add to database
                 const ref = await Payment.create({
@@ -144,9 +148,9 @@ const webhook = async (req, res) => {
                         success: true,
                         payment_reference: reference
                     })
-                    return res.status(200).json({status: true})
+                    return res.status(200).json({ status: true })
                 }
-        
+
                 if (purpose == "Subscription") {
                     //add to subscription table
                     const sub = await Subscription.create({
@@ -154,12 +158,12 @@ const webhook = async (req, res) => {
                         payment_reference: reference,
                         expires_in: calculateNextPayment(Date.now())
                     })
-                    return res.status(200).json({status: true})
+                    return res.status(200).json({ status: true })
                 }
             }
-        }     
+        }
 
-} catch (error) {
+    } catch (error) {
         res.status(400).json({
             status: false,
             error: error.mesage
