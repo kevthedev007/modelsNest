@@ -35,7 +35,7 @@ const subscription = async (req, res) => {
 }
 
 const verify = async (req, res) => {
-    const ref = req.body.ref;
+    const ref = req.query.reference;
     const MySecretKey = process.env.PAYSTACK_SECRET;
 
     try {
