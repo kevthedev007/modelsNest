@@ -232,4 +232,4 @@ const webhook = async (req, res) => {
 // }
 
 
-module.exports = { BookPayment, subscriptionPayment, verify }
+module.exports = { verify }
