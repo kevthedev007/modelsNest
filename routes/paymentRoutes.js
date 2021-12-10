@@ -5,7 +5,7 @@ const { verifyToken, recruiter_role, model_role } = require("../utils/verify");
 
 router.get('/book-model', verifyToken, bookModel);
 router.get('/subscription', verifyToken, subscription);
-router.post('/verify', verify);
+router.get('/verify', verify);
 router.post('/webhook', webhook);
 
 
