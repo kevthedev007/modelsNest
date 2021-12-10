@@ -35,6 +35,7 @@ const subscription = async (req, res) => {
 }
 
 const verify = async (req, res) => {
+    console.log(req.body.ref)
     const ref = req.body.ref;
     const MySecretKey = process.env.PAYSTACK_SECRET;
 
@@ -42,15 +43,14 @@ const verify = async (req, res) => {
         const settings = {
             method: 'GET',
             headers: {
-                'Authorization': process.env.PAYSTACK_SECRET,
-                'content-type': 'application/json',
-                'cache-control': 'no-cache'
+                Authorization: 'Bearer sk_test_ae736dbdb435609cc8953caef839c9d4f6980c51',
             }
         }
-        const data = await fetch('https://api.paystack.co/transaction/verify/' + encodeURIComponent(ref), settings);
-
+        console.log('here')
+        const data = await fetch("https://api.paystack.co/transaction/verify/" + ref, settings);
+        console.log(data)
         const response = await JSON.parse(data);
-
+        console.log(response)
         if (response.data.status == "failed") {
             return res.status(200).json({status: false})            
         }
