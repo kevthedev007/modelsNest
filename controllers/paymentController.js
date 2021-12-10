@@ -37,6 +37,7 @@ const verify = async (req, res) => {
             const checkReference = await Payment.findOne({ where: { reference } })
             if (checkReference) {
                 console.log(reference)
+                return res.status(200).json({status: true})
             } else {
                 //add to database
                 const ref = await Payment.create({
@@ -45,31 +46,31 @@ const verify = async (req, res) => {
                     purpose,
                     reference
                 })
+
+                if (purpose == "Book-Model") {
+                    //send mail
+                    sendBookModelMail(email, description);
+                    //add to book model
+                    const book = await Book_Model.create({
+                        userId: user.id,
+                        description,
+                        success: true,
+                        payment_reference: reference
+                    })
+                    return res.status(200).json({status: true})
+                }
+        
+                if (purpose == "Subscription") {
+                    //add to subscription table
+                    const sub = await Subscription.create({
+                        userId: user.id,
+                        payment_reference: reference,
+                        expires_in: calculateNextPayment(Date.now())
+                    })
+                    return res.status(200).json({status: true})
+                }
             }
-        }
-
-        if (purpose == "Book-Model") {
-            //send mail
-            sendBookModelMail(email, description);
-            //add to book model
-            const book = await Book_Model.create({
-                userId: user.id,
-                description,
-                success: true,
-                payment_reference: reference
-            })
-            return res.status(200).json({status: true})
-        }
-
-        if (purpose == "Subscription") {
-            //add to subscription table
-            const sub = await Subscription.create({
-                userId: user.id,
-                payment_reference: reference,
-                expires_in: calculateNextPayment(Date.now())
-            })
-            return res.status(200).json({status: true})
-        }
+        }      
 
     } catch (error) {
         return res.status(400).json({
@@ -82,9 +83,63 @@ const verify = async (req, res) => {
 
 const webhook = async (req, res) => {
     const event = req.body
+    try { 
+        if (event.event == "charge.success" && event.data.status == "failed") {
+            return res.status(200).json({status: false}) 
+        }
 
-    if (event.event == "paymentrequest.success" && event.data.status == "success") {
+        if (event.event == "charge.success" && event.data.status == "success") {
+            const { reference, amount } = event.data;
+            const { email } = event.data.customer;
+            const { id, purpose, description } = event.data.metadata;
+
+            //decode id(jwt)
+            const user = jwt.verify(id, process.env.JWT_SECRET_KEY)
+
+            //check if ref already exists in payment
+            const checkReference = await Payment.findOne({ where: { reference } })
+            if (checkReference) {
+                console.log(reference)
+                return res.status(200).json({status: true})
+            } else {
+                //add to database
+                const ref = await Payment.create({
+                    userId: user.id,
+                    amount,
+                    purpose,
+                    reference
+                })
+
+                if (purpose == "Book-Model") {
+                    //send mail
+                    sendBookModelMail(email, description);
+                    //add to book model
+                    const book = await Book_Model.create({
+                        userId: user.id,
+                        description,
+                        success: true,
+                        payment_reference: reference
+                    })
+                    return res.status(200).json({status: true})
+                }
         
+                if (purpose == "Subscription") {
+                    //add to subscription table
+                    const sub = await Subscription.create({
+                        userId: user.id,
+                        payment_reference: reference,
+                        expires_in: calculateNextPayment(Date.now())
+                    })
+                    return res.status(200).json({status: true})
+                }
+            }
+        }     
+
+} catch (error) {
+        res.status(400).json({
+            status: false,
+            error: error.mesage
+        })
     }
 }
 
@@ -232,4 +287,4 @@ const webhook = async (req, res) => {
 // }
 
 
-module.exports = { verify }
+module.exports = { verify, webhook }
