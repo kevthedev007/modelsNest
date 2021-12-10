@@ -63,9 +63,12 @@ app.use((req, res, next) => {
     res.status(404).json(`404: ${error.message}`)
 })
 
+
 let port = process.env.PORT || 4000
 
+
 app.listen(port, () => {
-    console.log(`server started at port ${port}`)
+    console.log(`server started at port ${port} and process ${process.pid}`)
     // require('./job')
 })
+

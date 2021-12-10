@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Media.belongsTo(User, {
         foreignKey: { name: 'userId', allowNull: false },
-        as: 'user'
+        as: 'user', onDelete: 'CASCADE'
       })
     }
 

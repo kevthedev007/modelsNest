@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Document.belongsTo(User, {
         foreignKey: { name: "userId", allowNull: false },
-        as: "user",
+        as: "user", onDelete: 'CASCADE'
       });
     }
     toJSON() {

@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Subscription.belongsTo(User, {
         foreignKey: { name: 'userId', allowNull: false },
-        as: 'user'
+        as: 'user', onDelete: 'CASCADE'
       })
     }
   };
