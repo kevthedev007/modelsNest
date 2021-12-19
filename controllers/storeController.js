@@ -62,8 +62,8 @@ const getStoreDetails = async (req, res) => {
       include: ['recruiter', 'model']
     })
 
-    const store = await Store.findOne({ where: { userId: req.user.id, id } })
-    const images = await Store_Images.findAll({ where: { userId: req.user.id, storeId: id } })
+    const store = await Store.findOne({ where: { id } })
+    const images = await Store_Images.findAll({ where: { storeId: id } })
 
     if (req.user.id == store.userId) {
       return res.status(200).json({ user, store, images, isUser: true })
