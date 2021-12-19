@@ -24,10 +24,17 @@ const subscription = async (req, res) => {
         const metadata = await User.findOne({
             where: {
                 id: req.user.id
-            }
+            },
+            include: 'subscription'
         })
 
-        return res.status(200).json({ metadata, purpose: "Subscription" })
+        return res.status(200).json({
+            email: metadata.email,
+            id: metadata.id,
+            role: metadata.role,
+            subscription_status: metadata.subscription.status,
+            purpose: "Subscription"
+        })
     } catch (error) {
         res.status(500).json(error.message)
     }

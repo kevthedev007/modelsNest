@@ -34,7 +34,7 @@ const dashboard = async (req, res, next) => {
         const info = await User.findOne(
             {
                 where: { id: req.user.id },
-                include: ['model', 'document', 'social_media']
+                include: ['model', 'document', 'social_media', 'subscription']
             })
 
         //get events
@@ -56,7 +56,8 @@ const dashboard = async (req, res, next) => {
                 document: info.document,
                 social_media: info.social_media
             },
-            events: eventInfo
+            events: eventInfo,
+            subscription_status: info.subscription.status
         });
 
 
@@ -71,14 +72,14 @@ const getSocials = async (req, res) => {
             where: {
                 id: req.user.id
             },
-            include: ['model', 'social_media', 'media']
+            include: ['model', 'social_media', 'media', 'subscription']
         })
 
         return res.status(200).json({
             full_name: details.full_name,
             profile_image: details.model.profile_image,
             phone_no: details.model.phone_no,
-            subscription_status: false,
+            subscription_status: details.subscription.status,
             social_media: details.social_media,
             images: details.media
         })
