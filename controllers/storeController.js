@@ -60,12 +60,28 @@ const getStoreDetails = async (req, res) => {
     const images = await Store_Images.findAll({ where: { storeId: id } })
 
     //get the user details of the store item
-    const user = await User.findOne({
+    const userDetails = await User.findOne({
       where: {
         id: store.userId,
       },
       include: ['recruiter', 'model']
     })
+
+    let user = {}
+
+    //if product was added by model
+    if (userDetails.recruiter == null) {
+      user.full_name = userDetails.full_name,
+        user.phone_no = userDetails.model.phone_no,
+        user.state = userDetails.model.state
+    }
+
+    //if product was added by recruiter
+    if (userDetails.model == null) {
+      user.full_name = userDetails.full_name,
+        user.phone_no = userDetails.recruiter.phone_no,
+        user.state = userDetails.recruiter.state
+    }
 
     if (req.user.id == store.userId) {
       return res.status(200).json({ user, store, images, isUser: true })
