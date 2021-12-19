@@ -65,8 +65,11 @@ const getStoreDetails = async (req, res) => {
     const store = await Store.findOne({ where: { userId: req.user.id, id } })
     const images = await Store_Images.findAll({ where: { userId: req.user.id, storeId: id } })
 
-    if (user.id == req.user.id) return res.status(200).json({ user, store, images, isUser: true })
-    else return res.status(200).json({ user, store, images, isUser: false })
+    if (user.id == req.user.id) {
+      return res.status(200).json({ user, store, images, isUser: true })
+    } else {
+      return res.status(200).json({ user, store, images, isUser: false })
+    }
 
   } catch (error) {
     res.status(500).json(error.message)
