@@ -52,12 +52,12 @@ const dashboard = async (req, res, next) => {
             info: {
                 full_name: info.full_name,
                 role: info.role,
+                subscription_status: info.subscription.status,
                 profile_image: info.model.profile_image,
                 document: info.document,
                 social_media: info.social_media
             },
             events: eventInfo,
-            subscription_status: info.subscription.status
         });
 
 
