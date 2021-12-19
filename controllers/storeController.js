@@ -1,4 +1,4 @@
-const { User, Store, Store_Images, Models } = require("../models/index");
+const { User, Store, Store_Images, Models, Recruiter } = require("../models/index");
 const cloudinary = require("../utils/cloudinary");
 
 const addItem = async (req, res) => {
@@ -59,12 +59,14 @@ const getStoreDetails = async (req, res) => {
       where: {
         id: req.user.id,
       },
-      include: ['store', 'model']
+      include: ['recruiter', 'model']
     })
+
+    const store = await Store.findOne({ where: { userId: req.user.id, id } })
     const images = await Store_Images.findAll({ where: { userId: req.user.id, storeId: id } })
 
-    if (user.id == req.user.id) return res.status(200).json({ user, images, isUser: true })
-    else return res.status(200).json({ user, images, isUser: false })
+    if (user.id == req.user.id) return res.status(200).json({ user, store, images, isUser: true })
+    else return res.status(200).json({ user, store, images, isUser: false })
 
   } catch (error) {
     res.status(500).json(error.message)
