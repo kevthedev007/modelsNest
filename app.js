@@ -13,14 +13,6 @@ if (process.env.NODE_ENV !== 'production') {
 const app = express()
 
 
-//test payment
-// const path = require('path');
-// app.use(express.static(path.join(__dirname, "public")));
-// app.set('view engine', 'ejs');
-//test payment
-
-
-
 //importing routes
 const authRoutes = require('./routes/authRoutes');
 const recruiterRoutes = require('./routes/recruiterRoutes')
