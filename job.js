@@ -6,12 +6,14 @@ cron.schedule("*/15 * * * *", async () => {
     console.log('job running')
     const sub = await Subscription.findAll();
 
-    for await (let i of sub) {
-        let date1 = new Date(i.expires_in);
-        let date2 = new Date()
+    if (sub) {
+        for await (let i of sub) {
+            let date1 = new Date(i.expires_in);
+            let date2 = new Date();
 
-        if (date1.getTime() < date2.getTime()) {
-            i.destroy()
+            if (date1.getTime() < date2.getTime()) {
+                i.destroy()
+            }
         }
     }
 })
