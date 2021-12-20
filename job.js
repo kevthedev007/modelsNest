@@ -13,7 +13,7 @@ cron.schedule("* * * * *", async () => {
         console.log(date1)
         console.log(date2)
         if (date1.getTime() < date2.getTime()) {
-            sub[i].destroy()
+            i.destroy()
         }
     }
 })
