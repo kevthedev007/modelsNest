@@ -7,6 +7,7 @@ cron.schedule("* * * * *", async () => {
     const sub = await Subscription.findAll();
 
     for await (let i of sub) {
+        console.log(i)
         let date1 = new Date(sub[i].expires_in);
         let date2 = new Date()
         console.log(date1)
