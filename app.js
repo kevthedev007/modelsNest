@@ -61,6 +61,6 @@ let port = process.env.PORT || 4000
 
 app.listen(port, () => {
     console.log(`server started at port ${port}`)
-    // require('./job')
+    require('./job')
 })
 
