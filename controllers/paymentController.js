@@ -29,7 +29,10 @@ const subscription = async (req, res) => {
         })
 
         return res.status(200).json({
-            metadata,
+            email: metadata.email,
+            id: metadata.id,
+            role: metadata.role,
+            subscription_status: metadata.subscription.status,
             purpose: "Subscription"
         })
     } catch (error) {

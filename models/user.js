@@ -41,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: { name: 'userId', allowNull: false },
         as: 'book_model'
       })
-      User.hasMany(Subscription, {
+      User.hasOne(Subscription, {
         foreignKey: { name: 'userId', allowNull: false },
         as: 'subscription'
       })
