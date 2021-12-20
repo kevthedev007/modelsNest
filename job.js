@@ -7,8 +7,9 @@ cron.schedule("* * * * *", async () => {
     const sub = await Subscription.findAll();
 
     for await (let i of sub) {
-        let date = new Date(sub[i].expires_in);
-        if (date <= Date.now()) {
+        let date1 = new Date(sub[i].expires_in);
+        let date2 = Date.now()
+        if (date1.getTime() < date2.getTime()) {
             sub[i].destroy()
         }
     }
