@@ -8,7 +8,7 @@ cron.schedule("* * * * *", async () => {
 
     for await (let i of sub) {
         console.log(i)
-        let date1 = new Date(sub[i].expires_in);
+        let date1 = new Date(i.expires_in);
         let date2 = new Date()
         console.log(date1)
         console.log(date2)
