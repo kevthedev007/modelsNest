@@ -1,7 +1,7 @@
 const cron = require('node-cron');
 const { Subscription } = require('./models')
 
-cron.schedule("*/15 * * * *", async () => {
+cron.schedule("*/10 * * * *", async () => {
     // TODO: subscritpion expiring
     console.log('job running')
     const sub = await Subscription.findAll();
