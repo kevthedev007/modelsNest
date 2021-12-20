@@ -35,7 +35,7 @@ const subscription = async (req, res) => {
                 id: metadata.id,
                 role: metadata.role,
                 subscription_status: false,
-                subscription_expires: 'none',
+                subscription_expires: "none",
                 purpose: "Subscription"
             })
         } else {
