@@ -1,4 +1,4 @@
-const { Models, User, Document, Social_Media, Event, Media } = require('../models');
+const { Models, User, Document, Social_Media, Event, Media, Subscription } = require('../models');
 const cloudinary = require('../utils/cloudinary')
 const bcrypt = require('bcrypt')
 
@@ -48,16 +48,34 @@ const dashboard = async (req, res, next) => {
             }
         })
 
-        return res.status(200).json({
-            info: {
-                full_name: info.full_name,
-                role: info.role,
-                profile_image: info.model.profile_image,
-                document: info.document,
-                social_media: info.social_media
-            },
-            events: eventInfo,
-        });
+        //check subscription status
+        const sub = await Subscription.findOne({ where: { userId: req.user.id } })
+
+        if (!sub) {
+            return res.status(200).json({
+                info: {
+                    full_name: info.full_name,
+                    subscription_status: false,
+                    role: info.role,
+                    profile_image: info.model.profile_image,
+                    document: info.document,
+                    social_media: info.social_media
+                },
+                events: eventInfo,
+            });
+        } else {
+            return res.status(200).json({
+                info: {
+                    full_name: info.full_name,
+                    subscription_status: sub.status,
+                    role: info.role,
+                    profile_image: info.model.profile_image,
+                    document: info.document,
+                    social_media: info.social_media
+                },
+                events: eventInfo,
+            });
+        }
 
 
     } catch (error) {
@@ -74,13 +92,29 @@ const getSocials = async (req, res) => {
             include: ['model', 'social_media', 'media']
         })
 
-        return res.status(200).json({
-            full_name: details.full_name,
-            profile_image: details.model.profile_image,
-            phone_no: details.model.phone_no,
-            social_media: details.social_media,
-            images: details.media
-        })
+        //check subscription status
+        const sub = await Subscription.findOne({ where: { userId: req.user.id } })
+
+        if (!sub) {
+            return res.status(200).json({
+                full_name: details.full_name,
+                subscription_status: false,
+                profile_image: details.model.profile_image,
+                phone_no: details.model.phone_no,
+                social_media: details.social_media,
+                images: details.media
+            })
+        } else {
+            return res.status(200).json({
+                full_name: details.full_name,
+                subscription_status: sub.status,
+                profile_image: details.model.profile_image,
+                phone_no: details.model.phone_no,
+                social_media: details.social_media,
+                images: details.media
+            })
+        }
+
     } catch (error) {
         return res.status(500).send(error.message);
     }
