@@ -60,17 +60,10 @@ const verify = async (req, res) => {
     const MySecretKey = process.env.PAYSTACK_SECRET;
 
     try {
-        const settings = {
-            method: 'GET',
-            headers: {
-                Authorization: 'Bearer sk_test_ae736dbdb435609cc8953caef839c9d4f6980c51',
-            }
-        }
-        // const data = await fetch("https://api.paystack.co/transaction/verify/" + ref, settings);\
         const data = await axios({
             url: 'https://api.paystack.co/transaction/verify/' + ref,
             headers: {
-                Authorization: 'Bearer sk_test_ae736dbdb435609cc8953caef839c9d4f6980c51'
+                Authorization: MySecretKey
             }
         })
 
