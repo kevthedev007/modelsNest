@@ -79,7 +79,6 @@ const deleteEvent = async (req, res) => {
     const { id } = req.params
 
     try {
-        // const event = await Event.destroy({ where: { id } })
 
         //delete image in cloud
         const event = await Event.findOne({ where: { id, userId: req.user.id } })

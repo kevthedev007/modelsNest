@@ -1,6 +1,5 @@
 const axios = require('axios')
 const { User, Payment, Book_Model, Subscription } = require("../models");
-// const { initializePayment, verifyPayment } = require('../utils/paystack')(request)
 const { sendBookModelMail } = require('../utils/sendmail');
 const { calculateNextPayment } = require('../utils/subscription')
 

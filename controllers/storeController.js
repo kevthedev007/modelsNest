@@ -30,20 +30,6 @@ const getStore = async (req, res) => {
   try {
     const stores = await Store.findAll({ raw: true, order: [['createdAt', 'DESC']] });
     if (!stores) return res.status(200).send("There are no available items now");
-
-    //check store_items owned by user
-    //   let availableItems = [];
-
-    //   for (let i in stores) {
-    //     if (stores[i].userId == req.user.id) {
-    //         stores[i].isUser = true
-    //         availableItems.push(stores[i])
-    //     } else {
-    //         stores[i].isUser = false
-    //         availableItems.push(stores[i])
-    //     }
-    // }
-
     return res.status(200).json(stores)
 
   } catch (error) {
