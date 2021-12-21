@@ -3,7 +3,7 @@ const { Subscription } = require('../models/index')
 
 function calculateNextPayment(normalDate) {
     const currentDate = moment(normalDate);
-    currentDate.add(1, 'days').format('YYYY-MM-DD hh:mm')
+    currentDate.add(30, 'minutes').format('YYYY-MM-DD hh:mm')
     return currentDate;
 }
 
